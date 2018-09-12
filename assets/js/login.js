@@ -4,10 +4,10 @@ document.getElementById('email').addEventListener('keydown', function (e) {
 
         const emailPrompt = document.querySelector('[data-promp="email"]');
 
-        // if (!this.value.match(emailRegex)) {
-        //     emailPrompt.classList.add('danger');
-        //     return;
-        // }
+        if (!this.value.match(emailRegex)) {
+            emailPrompt.classList.add('danger');
+            return;
+        }
 
         emailPrompt.classList.remove('danger');
 
@@ -35,6 +35,8 @@ document.getElementById('password').addEventListener('keydown', async function (
                 setTimeout(() => {
                     login.classList.remove('shake-trigger');
                 }, 250);
+            } else {
+                window.location.reload();
             }
         } catch (e) {
             console.log(e);

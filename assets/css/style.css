@@ -85,6 +85,10 @@ input {
     visibility: hidden;
 }
 
+.login {
+    padding: 20px;
+}
+
 .danger {
     color: rgb(255, 157, 157);
 }
