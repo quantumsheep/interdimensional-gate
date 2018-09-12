@@ -16,4 +16,4 @@ app.post('/login', (req, res) => {
 });
 
 const port = 3000;
-app.listen(port, () => console.log(`HTTP process launched on http://localhost:${3000}`));
+app.listen(port, () => console.log(`HTTP process launched on http://localhost:${port}`));
