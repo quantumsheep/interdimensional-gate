@@ -1,16 +1,16 @@
 @font-face {
     font-family: Futura;
-    src: url('/assets/fonts/Futura-Medium.ttf');
+    src: url('/fonts/Futura-Medium.ttf');
 }
   
 @font-face {
     font-family: FuturaICGDemi;
-    src: url('/assets/fonts/Futura-ICG-Demi.ttf');
+    src: url('/fonts/Futura-ICG-Demi.ttf');
 }
   
 @font-face {
     font-family: AndaleMono;
-    src: url('/assets/fonts/AndaleMono.ttf');
+    src: url('/fonts/AndaleMono.ttf');
 }
 
 * {
