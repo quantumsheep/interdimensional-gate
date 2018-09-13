@@ -32,6 +32,10 @@ exports.checkCredentials = (email, password) => new Promise(async (resolve, reje
     try {
         const account = await entity.findOne({ email }, ['password']);
 
+        if(!account || !account.password) {
+            return resolve(false);
+        }
+
         const valid = await bcrypt.compare(password, account.password);
 
         resolve(valid);
