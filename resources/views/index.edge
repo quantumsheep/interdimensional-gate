@@ -8,7 +8,20 @@
 
 @section('body')
     <div class="terminal-wrapper">
-        <div id="terminal"></div>
+        <form class="terminal" id="terminal">
+            <input type="hidden" name="command" id="command">
+            <button class="hidden" type="submit"></button>
+            <div>Linux vps518742 4.9.0-7-amd64 #1 SMP Debian 4.9.110-3+deb9u2 (2018-08-13) x86_64</div>
+            <br>
+            <div>The programs included with the Debian GNU/Linux system are free software;</div>
+            <div>the exact distribution terms for each program are described in the</div>
+            <div>individual files in /usr/share/doc/*/copyright.</div>
+            <br>
+            <div>Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</div>
+            <div>permitted by applicable law.</div>
+            <div>Last login: Fri Sep 14 14:13:12 2018 from 81.250.135.138</div>
+            <div id="cmd-line"><span id="cmd-prefix">root@vps518742:~#</span> <span id="cmd-input"></span></div>
+        </form>
     </div>
 @endsection
     
@@ -16,4 +29,5 @@
     <script>
         const username = '{{ user.username }}';
     </script>
+    {{ script('assets/js/gate.js') }}
 @endsection

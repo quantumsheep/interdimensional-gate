@@ -12,10 +12,10 @@ document.getElementById('email').addEventListener('keydown', function (e) {
         emailPrompt.classList.remove('danger');
 
         const passwordPrompt = document.querySelector('[data-promp="password"]');
-        passwordPrompt.classList.remove('hidden');
+        passwordPrompt.classList.remove('invisible');
 
         const passwordInput = document.getElementById('password');
-        passwordInput.classList.remove('hidden');
+        passwordInput.classList.remove('invisible');
         passwordInput.focus();
     }
 });

@@ -56,6 +56,10 @@ input {
   align-items: center;
 }
 
+.invisible {
+    visibility: hidden;
+}
+
 .hidden {
     visibility: hidden;
 }
@@ -208,6 +212,13 @@ input {
 /*
 | GATE
 */
+.terminal-wrapper {
+  padding: 25px;
+  height: 100%;
+}
+
 .terminal {
   height: 100%;
+  font-family: AndaleMono;
+  cursor: default;
 }
