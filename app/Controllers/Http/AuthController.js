@@ -1,7 +1,7 @@
 'use strict'
 
 class AuthController {
-    async login({ request, auth, session }) {
+    async login({ request, auth }) {
         try {
             const { email, password } = request.all();
 
