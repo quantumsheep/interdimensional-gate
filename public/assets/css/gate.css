@@ -1,28 +1,21 @@
 @font-face {
     font-family: Futura;
-    src: url('/fonts/Futura-Medium.ttf');
+    src: url('/assets/fonts/Futura-Medium.ttf');
 }
   
 @font-face {
     font-family: FuturaICGDemi;
-    src: url('/fonts/Futura-ICG-Demi.ttf');
+    src: url('/assets/fonts/Futura-ICG-Demi.ttf');
 }
   
 @font-face {
     font-family: AndaleMono;
-    src: url('/fonts/AndaleMono.ttf');
+    src: url('/assets/fonts/AndaleMono.ttf');
 }
 
 * {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-}
-
-*:not(input) {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
   
 body, html {
@@ -56,29 +49,11 @@ input {
     line-height: 100%;
 }
 
-.terminal-login {
-    font-family: AndaleMono;
-}
-
-.terminal-login > div {
-    display: flex;
-}
-
-.terminal-login > div .prompt {
-    transition: all .1s;
-    flex: 0 0 auto;
-    margin-right: 5px;
-}
-
 .center {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.terminal-login {
-    margin-bottom: 22px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hidden {
@@ -200,4 +175,39 @@ input {
     animation-duration: 100ms;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 2;
+}
+
+/*
+| LOGIN PAGE
+*/
+.terminal-login {
+  font-family: AndaleMono;
+}
+
+.terminal-login > div {
+  display: flex;
+}
+
+.terminal-login > div .prompt {
+  transition: all .1s;
+  flex: 0 0 auto;
+  margin-right: 5px;
+}
+
+.terminal-login {
+  margin-bottom: 22px;
+}
+
+.terminal-login *:not(input) {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/*
+| GATE
+*/
+.terminal {
+  height: 100%;
 }

@@ -1,25 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+@layout('layout')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Interdimenssional Gate</title>
+@section('head')
+    {{ style('assets/libs/xterm/xterm.min.css') }}
+    {{ script('assets/libs/xterm/xterm.min.js') }}
+    {{ script('assets/libs/xterm/addons/fit/fit.min.js') }}
+@endsection
 
-    {{ style('css/normalize/normalize.min.css') }}
-    {{ style('css/style.css') }}
-
-    <script>console.log("Hey, I'm here to load this website smoothly, don't pay attention to me :D");</script>
-</head>
-
-<body>
-    <noscript>
-        You'll need JavaScript to use this application :)
-    </noscript>
-    Hello :)
-
-    {{ script('js/axios/axios.min.js') }}
-</body>
-
-</html>
+@section('body')
+    <div class="terminal-wrapper">
+        <div id="terminal"></div>
+    </div>
+@endsection
+    
+@section('scripts')
+    <script>
+        const username = '{{ user.username }}';
+    </script>
+@endsection
