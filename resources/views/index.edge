@@ -1,15 +1,9 @@
 @layout('layout')
 
-@section('head')
-    {{ style('assets/libs/xterm/xterm.min.css') }}
-    {{ script('assets/libs/xterm/xterm.min.js') }}
-    {{ script('assets/libs/xterm/addons/fit/fit.min.js') }}
-@endsection
-
 @section('body')
     <div class="terminal-wrapper">
-        <form class="terminal" id="terminal">
-            <input type="hidden" name="command" id="command">
+        <form method="POST" action="/command" class="terminal" id="terminal">
+            <input type="text" class="input-hidden" name="command" id="cmd-input" autocomplete="off">
             <button class="hidden" type="submit"></button>
             <div>Linux vps518742 4.9.0-7-amd64 #1 SMP Debian 4.9.110-3+deb9u2 (2018-08-13) x86_64</div>
             <br>
@@ -20,7 +14,7 @@
             <div>Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</div>
             <div>permitted by applicable law.</div>
             <div>Last login: Fri Sep 14 14:13:12 2018 from 81.250.135.138</div>
-            <div id="cmd-line"><span id="cmd-prefix">root@vps518742:~#</span> <span id="cmd-input"></span></div>
+            <div id="cmd-line"><span id="cmd-prefix">root@vps518742:~#</span> <span id="cmd-content"></span></div>
         </form>
     </div>
 @endsection

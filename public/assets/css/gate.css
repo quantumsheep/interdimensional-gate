@@ -61,7 +61,17 @@ input {
 }
 
 .hidden {
-    visibility: hidden;
+    display: none;
+}
+
+.input-hidden {
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  overflow: hidden;
+  display: block;
 }
 
 .login {
@@ -221,4 +231,5 @@ input {
   height: 100%;
   font-family: AndaleMono;
   cursor: default;
+  word-break: break-all;
 }
