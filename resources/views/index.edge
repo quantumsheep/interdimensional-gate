@@ -3,28 +3,44 @@
 @section('body')
     <div class="terminal-wrapper">
         <form method="POST" action="/command" class="terminal" id="terminal">
+            <div id="terminal-content">
+                <div>Linux gate{{ user._id }} 4.9.0-7-amd64 #1 SMP Gate 4.9.110-3+deb9u2 (2018-08-13) x86_64</div>
+                <br>
+                <div>The programs included with the Interdimensional Gate system are free software;</div>
+                <div>the exact distribution terms for each program are described in the</div>
+                <div>individual files in /usr/share/doc/*/copyright.</div>
+                <br>
+                <div>Interdimensional Gate comes with ABSOLUTELY NO WARRANTY, to the extent</div>
+                <div>permitted by applicable law.</div>
+                <div>Last login: Fri Sep 14 14:13:12 2018 from 1.2.3.4</div>
+            </div>
+            <div id="cmd-line"><span id="cmd-prefix"></span> <span id="cmd-content"></span></div>
             <input type="text" class="input-hidden" name="command" id="cmd-input" autocomplete="off">
             <button class="hidden" type="submit"></button>
-            <div>Linux gate{{ user._id }} 4.9.0-7-amd64 #1 SMP Gate 4.9.110-3+deb9u2 (2018-08-13) x86_64</div>
-            <br>
-            <div>The programs included with the Interdimensional Gate system are free software;</div>
-            <div>the exact distribution terms for each program are described in the</div>
-            <div>individual files in /usr/share/doc/*/copyright.</div>
-            <br>
-            <div>Interdimensional Gate comes with ABSOLUTELY NO WARRANTY, to the extent</div>
-            <div>permitted by applicable law.</div>
-            <div>Last login: Fri Sep 14 14:13:12 2018 from 1.2.3.4</div>
-            <div id="cmd-line"><span id="cmd-prefix"></span> <span id="cmd-input"></span></div>
         </form>
     </div>
 @endsection
     
 @section('scripts')
+    {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
+    {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
+    {{ script('assets/js/gateos.js') }}
     <script>
         const user = {
-            username: '{{ user.username }}',
             _id: '{{ user._id }}',
+            username: '{{ user.username.toLowerCase() }}',
         };
+
+        const terminal = {
+            form: document.getElementById('terminal'),
+            content: document.getElementById('terminal-content'),
+            cmd: {
+                prefix: document.getElementById('cmd-prefix'),
+                content: document.getElementById('cmd-content'),
+                input: document.getElementById('cmd-input'),
+            }
+        }
+
+        const gate = new GateOs(terminal, user);
     </script>
-    {{ script('assets/js/gate.js') }}
 @endsection

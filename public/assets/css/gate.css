@@ -232,4 +232,5 @@ input {
   font-family: AndaleMono;
   cursor: default;
   word-break: break-all;
+  overflow: auto;
 }

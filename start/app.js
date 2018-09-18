@@ -18,6 +18,7 @@ const providers = [
   '@adonisjs/shield/providers/ShieldProvider',
   '@adonisjs/session/providers/SessionProvider',
   '@adonisjs/auth/providers/AuthProvider',
+  '@adonisjs/websocket/providers/WsProvider',
   'lucid-mongo/providers/LucidMongoProvider',
 ]
 
