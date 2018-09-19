@@ -4,9 +4,9 @@ class HomeController {
     async index({ view, auth }) {
         try {
             await auth.check();
-
+            
             return view.render('index', { user: auth.user });
-        } catch {
+        } catch (e) {
             return view.render('login');
         }
     }
