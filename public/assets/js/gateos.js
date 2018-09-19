@@ -32,22 +32,22 @@ class GateOs {
         });
 
         this.terminal.cmd.input.addEventListener('keydown', e => {
-            if(e.key === 'ArrowUp') {
+            if (e.key === 'ArrowUp') {
                 e.preventDefault();
 
                 this.selected++;
-                
-                if(this.selected >= this.history.length) {
+
+                if (this.selected >= this.history.length) {
                     this.selected = this.history.length - 1;
                 } else {
                     this.terminal.cmd.input.value = this.history[this.history.length - 1 - this.selected] || '';
                 }
-            } else if(e.key === 'ArrowDown') {
+            } else if (e.key === 'ArrowDown') {
                 e.preventDefault();
 
                 this.selected--;
-                
-                if(this.selected < -1) {
+
+                if (this.selected < -1) {
                     this.selected = -1;
                 } else {
                     this.terminal.cmd.input.value = this.history[this.history.length - 1 - this.selected] || '';
@@ -70,10 +70,10 @@ class GateOs {
 
                 this.sendCommand(this.terminal.cmd.input.value);
 
-                if(this.terminal.cmd.input.value != this.history[this.history.length - 1]) {
+                if (this.terminal.cmd.input.value != this.history[this.history.length - 1]) {
                     this.history.push(this.terminal.cmd.input.value);
                 }
-                
+
                 this.selected = -1;
 
                 this.terminal.cmd.input.value = '';
@@ -85,7 +85,7 @@ class GateOs {
         this.updateCommandContent();
         this.initializeSocket();
     }
-    
+
     async updateCommandContent() {
         while (this.terminal.cmd.content.firstChild) {
             this.terminal.cmd.content.removeChild(this.terminal.cmd.content.firstChild);
@@ -99,13 +99,13 @@ class GateOs {
 
         const selector = document.createElement('span');
 
-        if(content[selectionStart]) {
+        if (content[selectionStart]) {
             selector.style.color = '#000';
             selector.innerText = content[selectionStart];
         } else {
             selector.innerText = 'x';
         }
-        
+
         selector.style.backgroundColor = '#fff';
 
         const last = document.createElement('span');

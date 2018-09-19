@@ -222,12 +222,8 @@ input {
 /*
 | GATE
 */
-.terminal-wrapper {
-  padding: 25px;
-  height: 100%;
-}
-
 .terminal {
+  padding: 25px;
   height: 100%;
   font-family: AndaleMono;
   cursor: default;
