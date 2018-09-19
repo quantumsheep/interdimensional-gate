@@ -28,7 +28,7 @@
     "@adonisjs/session": "^1.0.26",
     "@adonisjs/shield": "^1.0.7",
     "@adonisjs/websocket": "^1.0.11",
-    "lucid-mongo": "^3.1.0"
+    "lucid-mongo": "^3.1.1"
   },
   "devDependencies": {},
   "autoload": {
