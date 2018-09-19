@@ -11,7 +11,9 @@ class OSController {
       return;
     }
 
-    const [cmd, ...args] = fullcmd.split(' ');
+    const [cmd, ...args] = fullcmd.trim().split(' ');
+    
+    args.map(arg => arg.trim());
 
     if (cmd === 'ls') {
       this.socket.emit('response', ['test']);

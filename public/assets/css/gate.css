@@ -234,3 +234,7 @@ input {
   word-break: break-all;
   overflow: auto;
 }
+
+#cmd-content {
+  white-space: pre-wrap;
+}
