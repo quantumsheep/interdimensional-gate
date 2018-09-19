@@ -18,8 +18,8 @@ class GateOs {
         this.user = user;
         this.history = [];
         this.selected = -1;
-
-        window.addEventListener('click', () => {
+        
+        this.terminal.form.addEventListener('click', () => {
             this.terminal.cmd.input.focus();
         });
 
