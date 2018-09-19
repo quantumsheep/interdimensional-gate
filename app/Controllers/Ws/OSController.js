@@ -15,7 +15,11 @@ class OSController {
 
     if (cmd === 'ls') {
       this.socket.emit('response', ['test']);
+    } else {
+      this.socket.emit('response', "You can't access this command.");
     }
+
+    this.socket.emit('end');
   }
 
   onClose() {
