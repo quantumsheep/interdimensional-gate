@@ -53,8 +53,6 @@ class GateOs {
                     this.terminal.cmd.input.value = this.history[this.history.length - 1 - this.selected] || '';
                 }
             }
-
-
         });
 
         this.terminal.form.addEventListener('submit', e => {
