@@ -70,7 +70,10 @@ class GateOs {
 
                 this.sendCommand(this.terminal.cmd.input.value);
 
-                this.history.push(this.terminal.cmd.input.value);
+                if(this.terminal.cmd.input.value != this.history[this.history.length - 1]) {
+                    this.history.push(this.terminal.cmd.input.value);
+                }
+                
                 this.selected = -1;
 
                 this.terminal.cmd.input.value = '';
