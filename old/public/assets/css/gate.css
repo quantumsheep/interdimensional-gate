@@ -192,34 +192,6 @@ input {
 }
 
 /*
-| LOGIN PAGE
-*/
-.terminal-login {
-  font-family: AndaleMono;
-}
-
-.terminal-login > div {
-  display: flex;
-}
-
-.terminal-login > div .prompt {
-  transition: all .1s;
-  flex: 0 0 auto;
-  margin-right: 5px;
-}
-
-.terminal-login {
-  margin-bottom: 22px;
-}
-
-.terminal-login *:not(input) {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/*
 | GATE
 */
 .terminal {

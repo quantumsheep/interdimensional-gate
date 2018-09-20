@@ -1,19 +1,26 @@
-'use strict'
+const app = require('express')();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const next = require('next');
 
-const cluster = require('cluster')
+const dev = process.env.NODE_ENV !== 'production';
+const nextApp = next({ dev });
+const nextHandler = nextApp.getRequestHandler();
 
-if (cluster.isMaster) {
-  for (let i = 0; i < 1; i++) {
-    cluster.fork()
-  }
-  require('@adonisjs/websocket/clusterPubSub')()
-  return
-}
+const port = 3000;
 
-const { Ignitor } = require('@adonisjs/ignitor')
+io.on('connect', socket => {
+    socket.emit('test', {
+        message: 't'
+    });
+});
 
-new Ignitor(require('@adonisjs/fold'))
-  .appRoot(__dirname)
-  .wsServer()
-  .fireHttpServer()
-  .catch(console.error)
+nextApp.prepare().then(() => {
+    app.get('*', (req, res) => nextHandler(req, res));
+
+    server.listen(port, err => {
+        if(err) throw err;
+
+        console.log(`> Ready on http://localhost:${port}`);
+    });
+});
