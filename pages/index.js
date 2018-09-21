@@ -4,15 +4,71 @@ import Head from 'next/head';
 import Terminal from '../components/Terminal';
 
 export default class extends Component {
+    state = {
+        prefix: 'guess@gate',
+        hideInput: true,
+        /**
+         * @type {JSX.Element[]}
+         */
+        rows: [],
+    }
+
     componentDidMount() {
         this.socket = io();
-        this.socket.on('test', ({ message, action }) => {
-            console.log(message);
+
+        this.socket.on('connect', () => {
+            this.socket.emit('start', this.state.rows.length > 0);
+        });
+
+        this.socket.on('ready', () => {
+            this.showInput();
+        });
+
+        this.socket.on('row', content => {
+            this.addRow(content);
+        });
+
+        this.socket.on('linejump', this.addLineJump);
+
+        this.socket.on('end', () => {
+            this.showInput();
         });
     }
 
+    addRow = content => {
+        if (!content) return;
+
+        const rows = this.state.rows;
+        const key = rows.length;
+
+        if (Array.isArray(content)) {
+            rows.push(
+                <div key={key}>{content.map((part, i) => <span key={i}>{part}</span>)}</div>
+            );
+        } else {
+            rows.push(<div key={key}>{content}</div>);
+        }
+
+        this.setState({ rows });
+    }
+
+    addLineJump = () => {
+        const rows = this.state.rows;
+        const key = rows.length;
+
+        rows.push(<br key={key} />);
+        this.setState({ rows });
+    }
+
+    hideInput = () => this.setState({ hideInput: true });
+    showInput = () => this.setState({ hideInput: false });
+
     sendCommand = command => {
-        console.log(command);
+        this.hideInput();
+
+        this.addRow(`${this.state.prefix}> ${command}`);
+
+        this.socket.emit('command', command);
     }
 
     render() {
@@ -23,16 +79,11 @@ export default class extends Component {
                     <link href="/static/css/normalize/normalize.min.css" rel="stylesheet" />
                     <link href="/static/css/gate.css" rel="stylesheet" />
                 </Head>
-                <Terminal sendCommand={this.sendCommand}>
-                    <div>Linux gate 4.9.0-7-amd64 #1 SMP Gate 4.9.110-3+deb9u2 (2018-08-13) x86_64</div>
-                    <br />
-                    <div>The programs included with the Interdimensional Gate system are free software;</div>
-                    <div>the exact distribution terms for each program are described in the</div>
-                    <div>individual files in /usr/share/doc/*/copyright.</div>
-                    <br />
-                    <div>Interdimensional Gate comes with ABSOLUTELY NO WARRANTY, to the extent</div>
-                    <div>permitted by applicable law.</div>
-                    <div>Last login: Fri Sep 14 14:13:12 2018 from 1.2.3.4</div>
+                <Terminal prefix={this.state.prefix} sendCommand={this.sendCommand} hideInput={this.state.hideInput}>
+                    {this.state.rows.length <= 0 ? <div>Fetching data...</div> : null}
+                    {
+                        this.state.rows.map(row => row)
+                    }
                 </Terminal>
             </div>
         )

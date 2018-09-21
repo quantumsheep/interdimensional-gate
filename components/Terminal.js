@@ -3,8 +3,6 @@ import TerminalContent from './TerminalContent';
 
 export default class Terminal extends Component {
     state = {
-        prefix: 'guess@gate',
-        content: '',
         /** @type {HTMLInputElement} */
         input: {
             focus: () => { },
@@ -78,16 +76,17 @@ export default class Terminal extends Component {
     }
 
     render() {
-        const { children, ...others } = this.props;
+        const { children, prefix = '', hideInput = false, ...others } = this.props;
 
         return (
             <form onSubmit={this.sendCommand} className="terminal" onClick={this.focusInput}>
                 <div>
                     {children}
                 </div>
-                <div><span>{this.state.prefix}></span> <TerminalContent selectionStart={this.state.input.selectionStart} content={this.state.input.value} /></div>
+                <div className={hideInput ? 'invisible' : ''}><span>{prefix}></span> <TerminalContent selectionStart={this.state.input.selectionStart} content={this.state.input.value} /></div>
                 <input
                     ref={input => this.state.input = input}
+                    className={hideInput ? 'invisible' : ''}
                     type="text" className="input-hidden"
                     value={this.state.input.value}
                     onChange={this.updateInput}

@@ -18,7 +18,7 @@
             box-sizing: border-box;
 }
   
-body, html {
+body, html, #__next, div[data-reactroot] {
     height: 100%;
 }
   
