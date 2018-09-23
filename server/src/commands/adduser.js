@@ -3,36 +3,6 @@ const bcrypt = require('bcrypt');
 const helpers = require('../helpers');
 const { User } = require('../models');
 
-// Adding user `test' ...
-// Adding new group `test' (1001) ...
-// Adding new user `test' (1001) with group `test' ...
-// Creating home directory `/home/test' ...
-// Copying files from `/etc/skel' ...
-// Enter new UNIX password:
-// Retype new UNIX password:
-// passwd: password updated successfully
-// Changing the user information for test
-// Enter the new value, or press ENTER for the default
-//         Full Name []: Test
-//         Room Number []:
-//         Work Phone []:
-//         Home Phone []:
-//         Other []:
-// Is the information correct? [Y/n] n
-// Changing the user information for test
-// Enter the new value, or press ENTER for the default
-//         Full Name [Test]:
-//         Room Number []:
-//         Work Phone []:
-//         Home Phone []:
-//         Other []:
-// Is the information correct? [Y/n] t
-
-// Sorry, passwords do not match
-// passwd: Authentication token manipulation error
-// passwd: password unchanged
-// Try again? [y/N] N
-
 /**
  * @param {import('../GateOS')} os 
  * @param {string[]} args
