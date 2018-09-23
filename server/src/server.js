@@ -25,6 +25,8 @@ const esession = require('express-session');
 const MongoStore = require('connect-mongo')(esession);
 const { connection } = require('./db');
 
+const day = 24 * 60 * 60 * 1000;
+
 const session = esession({
     name: 'gate',
     secret: cookieSecret,
@@ -33,7 +35,7 @@ const session = esession({
     cookie: {
         secure: !dev,
         httpOnly: true,
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
+        expires: new Date(Date.now() + 31 * day)
     },
     store: new MongoStore({ mongooseConnection: connection })
 });
