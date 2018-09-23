@@ -55,6 +55,10 @@ if (!dev) {
     const mime = require('mime-types');
 
     app.get('*', async (req, res, next) => {
+        if (req.url === '/' || req.url === '') {
+            req.url = '/index.html';
+        }
+
         const filepath = path.resolve('../client/build/' + req.url);
 
         fs.exists(filepath, exists => {
