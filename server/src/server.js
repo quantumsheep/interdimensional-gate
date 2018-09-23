@@ -42,9 +42,44 @@ const session = esession({
 
 app.use(session);
 
-app.get('/identify', (req, res) => {
-    res.send('ok');
-});
+app.get('/identify', (req, res) => res.send('ok'));
+
+
+/**
+| ONLY IN PRODUCTION
+| Serve client files
+*/
+if (!dev) {
+    const fs = require('fs');
+    const path = require('path');
+    const mime = require('mime-types');
+
+    app.get('*', async (req, res, next) => {
+        const filepath = path.resolve('../client/build/' + req.url);
+
+        fs.exists(filepath, exists => {
+            if (!exists) {
+                return next();
+            }
+
+            fs.stat(filepath, (err, stats) => {
+                if (err || stats.isDirectory()) {
+                    return next();
+                }
+
+                fs.readFile(filepath, (err, data) => {
+                    if (err) return next();
+
+                    console.log(mime.lookup(filepath));
+
+                    res.contentType(mime.lookup(filepath) || 'text/html');
+                    res.send(data);
+                });
+            });
+        });
+    });
+}
+
 
 /*
 | Handle Gate Operating System WS requests
