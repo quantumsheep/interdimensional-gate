@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import axios from 'axios';
 
 import Terminal from './Terminal';
 
@@ -18,38 +19,54 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        this.socket = io('', {
-            path: '/gateos',
-        });
+        this.initOS();
+    }
 
-        this.socket.on('connect', () => {
-            this.socket.emit('start', this.state.rows.length > 0);
-        });
+    initOS = async () => {
+        try {
+            /*
+            | Get session cookie
+            */
+            await axios.get('/identify');
 
-        this.socket.on('ready', () => {
-            this.showInput();
-        });
+            /*
+            | Connect to the operating system 
+            */
+            this.socket = io('', {
+                path: '/gateos',
+            });
 
-        this.socket.on('row', content => {
-            this.addRow(content);
-        });
+            this.socket.on('connect', () => {
+                this.socket.emit('start', this.state.rows.length > 0);
+            });
 
-        this.socket.on('input', (prefix, type) => {
-            this.setState({ terminput: { prefix, type } });
-            this.showInput();
-        });
+            this.socket.on('ready', () => {
+                this.showInput();
+            });
 
-        this.socket.on('update prefix', prefix => {
-            this.setState({ prefix });
-        });
+            this.socket.on('row', content => {
+                this.addRow(content);
+            });
 
-        this.socket.on('linejump', this.addLineJump);
+            this.socket.on('input', (prefix, type) => {
+                this.setState({ terminput: { prefix, type } });
+                this.showInput();
+            });
 
-        this.socket.on('end', () => {
-            this.setState({ terminput: { prefix: '', type: '' } });
-            this.showInput();
-            this.scrollDown();
-        });
+            this.socket.on('update prefix', prefix => {
+                this.setState({ prefix });
+            });
+
+            this.socket.on('linejump', this.addLineJump);
+
+            this.socket.on('end', () => {
+                this.setState({ terminput: { prefix: '', type: '' } });
+                this.showInput();
+                this.scrollDown();
+            });
+        } catch (e) {
+
+        }
     }
 
     addRow = content => {

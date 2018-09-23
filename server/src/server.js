@@ -6,6 +6,15 @@ const server = require('http').Server(app);
 */
 const dev = process.env.NODE_ENV !== 'production';
 
+const cookieSecret = 'hna3StBXRERf4BMJgJw8mEjXfGATrhNMZXGGcvVpzXRW69bULUZMkC2K9hfDbtab3mdyTFjEzQDYqkW2aA6edyQsCRf2TMmPrEwueZtfcqfA29nxCDrhT6Xaw6BELmhw';
+
+/*
+| Define express properties
+*/
+const helmet = require('helmet');
+
+app.use(helmet());
+
 app.set('trust proxy', 1);
 
 
@@ -18,15 +27,22 @@ const { connection } = require('./db');
 
 const session = esession({
     name: 'gate',
-    secret: 'wqUA_>n,u$h|uCcebW,|;4&a}5B)[+ZI0]WUZI/.[S$T4{c%dxs3Bea|Pl96rTc}%=w30W#/=T|^@:h[K$E&5"4WPC7_xE[-PZC%@~JtDx)%%n1EVX2=TEYxz&LE-?=W',
-    resave: false,
+    secret: cookieSecret,
+    resave: true,
     saveUninitialized: true,
-    cookie: { secure: !dev },
+    cookie: {
+        secure: !dev,
+        httpOnly: true,
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
+    },
     store: new MongoStore({ mongooseConnection: connection })
 });
 
 app.use(session);
 
+app.get('/identify', (req, res) => {
+    res.send('ok');
+});
 
 /*
 | Handle Gate Operating System WS requests
@@ -35,13 +51,12 @@ const io = require('socket.io')(server, {
     path: '/gateos'
 });
 
-const sharedsession = require('express-socket.io-session');
+const ios = require('express-socket.io-session');
+const cookieParser = require('cookie-parser');
+
+io.use(ios(session, cookieParser(cookieSecret)));
 
 const GateOS = require('./GateOS');
-
-io.use(sharedsession(session, {
-    autoSave: true
-}));
 
 io.on('connection', socket => new GateOS(io, socket));
 

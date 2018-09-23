@@ -70,6 +70,8 @@ exports.state = async (os, value) => {
         os.session.user = user;
         os.session.save();
 
+        os.setPrefix(`${user.username.toLowerCase()}@gate>`)
+
         os.end();
     } catch (e) {
         console.log(e)
