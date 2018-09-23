@@ -1,25 +1,27 @@
 @font-face {
     font-family: Futura;
-    src: url('/static/fonts/Futura-Medium.ttf');
+    src: url('/assets/fonts/Futura-Medium.ttf') format('truetype');
 }
   
 @font-face {
     font-family: FuturaICGDemi;
-    src: url('/static/fonts/Futura-ICG-Demi.ttf');
+    src: url('/assets/fonts/Futura-ICG-Demi.ttf') format('truetype');
 }
   
 @font-face {
     font-family: AndaleMono;
-    src: url('/static/fonts/AndaleMono.ttf');
+    src: url('/assets/fonts/AndaleMono.ttf') format('truetype');
 }
 
 * {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
 }
-  
-body, html, #__next, div[data-reactroot] {
-    height: 100%;
+
+html, body, #root, .app {
+    display: flex;
+    width: 100%;
+    min-height: 100%;
 }
   
 body {

@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 export default class TerminalContent extends Component {
     static defaultProps = {
@@ -8,12 +7,12 @@ export default class TerminalContent extends Component {
     }
 
     render() {
-        const { content, selectionStart, ...others } = this.props;
+        const { content, selectionStart, className } = this.props;
 
         const color = content[selectionStart] ? '#000000' : '#ffffff';
 
         return (
-            <span className="terminal-input-content">
+            <span className={(className ? className + ' ' : '') + "terminal-input-content"}>
                 <span>{content.slice(0, selectionStart)}</span>
                 <span className="terminal-selector" style={{ color }}>{content[selectionStart] || 'x'}</span>
                 <span>{content.slice(selectionStart + 1, content.length)}</span>

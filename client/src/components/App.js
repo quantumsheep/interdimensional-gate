@@ -1,11 +1,15 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import io from 'socket.io-client';
-import Head from 'next/head';
-import Terminal from '../components/Terminal';
 
-export default class extends Component {
+import Terminal from './Terminal';
+
+export default class App extends Component {
     state = {
-        prefix: 'guess@gate',
+        prefix: '',
+        terminput: {
+            prefix: '',
+            type: '',
+        },
         hideInput: true,
         /**
          * @type {JSX.Element[]}
@@ -14,7 +18,9 @@ export default class extends Component {
     }
 
     componentDidMount() {
-        this.socket = io();
+        this.socket = io('', {
+            path: '/gateos',
+        });
 
         this.socket.on('connect', () => {
             this.socket.emit('start', this.state.rows.length > 0);
@@ -28,10 +34,21 @@ export default class extends Component {
             this.addRow(content);
         });
 
+        this.socket.on('input', (prefix, type) => {
+            this.setState({ terminput: { prefix, type } });
+            this.showInput();
+        });
+
+        this.socket.on('update prefix', prefix => {
+            this.setState({ prefix });
+        });
+
         this.socket.on('linejump', this.addLineJump);
 
         this.socket.on('end', () => {
+            this.setState({ terminput: { prefix: '', type: '' } });
             this.showInput();
+            this.scrollDown();
         });
     }
 
@@ -50,6 +67,8 @@ export default class extends Component {
         }
 
         this.setState({ rows });
+
+        this.scrollDown();
     }
 
     addLineJump = () => {
@@ -58,6 +77,12 @@ export default class extends Component {
 
         rows.push(<br key={key} />);
         this.setState({ rows });
+
+        this.scrollDown();
+    }
+
+    scrollDown = () => {
+        window.scrollTo(0, document.body.scrollHeight);
     }
 
     hideInput = () => this.setState({ hideInput: true });
@@ -66,20 +91,24 @@ export default class extends Component {
     sendCommand = command => {
         this.hideInput();
 
-        this.addRow(`${this.state.prefix}> ${command}`);
+        if (this.state.terminput.prefix) {
+            this.addRow(`${this.state.terminput.prefix} ${this.state.terminput.type !== 'password' ? command : ''}`);
+        } else {
+            this.addRow(`${this.state.prefix} ${command}`);
+        }
 
         this.socket.emit('command', command);
     }
 
     render() {
         return (
-            <div>
-                <Head>
-                    <title>Interdimensional Gate</title>
-                    <link href="/static/css/normalize/normalize.min.css" rel="stylesheet" />
-                    <link href="/static/css/gate.css" rel="stylesheet" />
-                </Head>
-                <Terminal prefix={this.state.prefix} sendCommand={this.sendCommand} hideInput={this.state.hideInput}>
+            <div className="app">
+                <Terminal
+                    prefix={this.state.terminput.prefix || this.state.prefix}
+                    inputType={this.state.terminput.type}
+                    sendCommand={this.sendCommand}
+                    hideInput={this.state.hideInput}
+                >
                     {this.state.rows.length <= 0 ? <div>Fetching data...</div> : null}
                     {
                         this.state.rows.map(row => row)

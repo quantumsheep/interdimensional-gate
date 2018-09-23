@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import TerminalContent from './TerminalContent';
 
 export default class Terminal extends Component {
@@ -76,18 +76,25 @@ export default class Terminal extends Component {
     }
 
     render() {
-        const { children, prefix = '', hideInput = false, ...others } = this.props;
+        const { children, prefix = '', inputType = null, hideInput = false } = this.props;
 
         return (
             <form onSubmit={this.sendCommand} className="terminal" onClick={this.focusInput}>
                 <div>
                     {children}
                 </div>
-                <div className={hideInput ? 'invisible' : ''}><span>{prefix}></span> <TerminalContent selectionStart={this.state.input.selectionStart} content={this.state.input.value} /></div>
+                <div className={hideInput ? 'invisible' : ''}>
+                    <span>{prefix} </span>
+                    <TerminalContent
+                        selectionStart={inputType === 'password' ? 0 : this.state.input.selectionStart}
+                        content={inputType === 'password' ? '' : this.state.input.value}
+                    />
+                </div>
                 <input
+                    // eslint-disable-next-line
                     ref={input => this.state.input = input}
-                    className={hideInput ? 'invisible' : ''}
-                    type="text" className="input-hidden"
+                    type={inputType || 'text'} 
+                    className="input-hidden"
                     value={this.state.input.value}
                     onChange={this.updateInput}
                     onKeyDown={this.handleInputKey}

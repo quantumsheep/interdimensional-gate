@@ -12,12 +12,17 @@ app.set('trust proxy', 1);
 /*
 | Initialize session handler
 */
-const session = require('express-session')({
+const esession = require('express-session');
+const MongoStore = require('connect-mongo')(esession);
+const { connection } = require('./db');
+
+const session = esession({
     name: 'gate',
     secret: 'wqUA_>n,u$h|uCcebW,|;4&a}5B)[+ZI0]WUZI/.[S$T4{c%dxs3Bea|Pl96rTc}%=w30W#/=T|^@:h[K$E&5"4WPC7_xE[-PZC%@~JtDx)%%n1EVX2=TEYxz&LE-?=W',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: !dev }
+    cookie: { secure: !dev },
+    store: new MongoStore({ mongooseConnection: connection })
 });
 
 app.use(session);
@@ -26,7 +31,10 @@ app.use(session);
 /*
 | Handle Gate Operating System WS requests
 */
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+    path: '/gateos'
+});
+
 const sharedsession = require('express-socket.io-session');
 
 const GateOS = require('./GateOS');
@@ -35,25 +43,16 @@ io.use(sharedsession(session, {
     autoSave: true
 }));
 
-io.on('connection', socket => GateOS(io, socket));
+io.on('connection', socket => new GateOS(io, socket));
 
 
 /*
-| Load NextJS and HTTP request listener
+| Load HTTP request listener
 */
-const next = require('next');
+const port = 3011;
 
-const nextApp = next({ dev });
-const nextHandler = nextApp.getRequestHandler();
+server.listen(port, err => {
+    if (err) throw err;
 
-const port = 3000;
-
-nextApp.prepare().then(() => {
-    app.get('*', (req, res) => nextHandler(req, res));
-
-    server.listen(port, err => {
-        if (err) throw err;
-
-        console.log(`> Ready on http://localhost:${port}`);
-    });
+    console.log(`> Ready on http://localhost:${port}`);
 });
