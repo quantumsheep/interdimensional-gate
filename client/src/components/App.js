@@ -73,17 +73,36 @@ export default class App extends Component {
         if (!content) return;
 
         const rows = this.state.rows;
-        const key = rows.length;
 
         if (Array.isArray(content)) {
+            const key = rows.length;
+
             rows.push(
                 <div key={key}>{content.map((part, i) => <span key={i}>{part}</span>)}</div>
             );
-        } else {
-            rows.push(<div key={key}>{content}</div>);
-        }
 
-        this.setState({ rows });
+            this.setState({ rows });
+        } else {
+            const newRows = String(content).split('\n');
+
+            newRows.forEach((row, i) => {
+                const key = rows.length;
+
+                row = row.trim();
+
+                if (!row && i < newRows.length) {
+                    rows.push(
+                        <br key={key} />
+                    );
+                } else {
+                    rows.push(
+                        <div key={key}>{row}</div>
+                    );
+                }
+
+                this.setState({ rows });
+            });
+        }
 
         this.scrollDown();
     }
