@@ -1,11 +1,20 @@
-const SocketIO = require('socket.io')
+const fs = require('fs');
+const path = require('path');
+const SocketIO = require('socket.io');
 
-const commands = {
-    'ls': require('./commands/ls'),
-    'login': require('./commands/login'),
-    'logout': require('./commands/logout'),
-    'adduser': require('./commands/adduser'),
-};
+const commandsPath = path.resolve('src/commands');
+
+const commands = {};
+
+fs.readdir(commandsPath, (err, files) => {
+    if (err) return console.log(err);
+
+    files.forEach(file => {
+        if (file.endsWith('.js')) {
+            commands[file.slice(0, -3)] = require(`${commandsPath}/${file}`);
+        }
+    });
+});
 
 module.exports = class GateOS {
     /**
