@@ -207,7 +207,7 @@ input {
   cursor: default;
   word-break: break-all;
   overflow: auto;
-  font-size: 0.8em;
+  font-size: 1em;
 }
 
 .terminal-selector {
