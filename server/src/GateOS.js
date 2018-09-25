@@ -36,10 +36,10 @@ module.exports = class GateOS {
         /**
         | Define the user's terminal prompt
         */
-        this.defaultPrefix = 'guest@gate>';
+        this.defaultPrefix = 'guest@gate $';
 
         if (this.session.connected) {
-            this.setPrefix(`${this.session.user.username.toLowerCase()}@gate>`);
+            this.setPrefix(`${this.session.user.username.toLowerCase()}@gate $`);
         } else {
             this.setPrefix(this.defaultPrefix);
         }

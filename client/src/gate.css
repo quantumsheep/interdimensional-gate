@@ -193,6 +193,10 @@ input {
     animation-iteration-count: 2;
 }
 
+.color-inherit {
+  color: inherit !important;
+}
+
 /*
 | GATE
 */
@@ -203,10 +207,15 @@ input {
   cursor: default;
   word-break: break-all;
   overflow: auto;
+  font-size: 0.8em;
 }
 
 .terminal-selector {
   background-color: #ffffff;
+}
+
+.terminal-prefix {
+  color: #ccc;
 }
 
 .terminal-input-content {

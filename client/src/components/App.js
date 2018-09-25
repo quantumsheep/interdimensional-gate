@@ -7,11 +7,11 @@ import Terminal from './Terminal';
 export default class App extends Component {
     state = {
         prefix: '',
+        hideInput: true,
         terminput: {
             prefix: '',
             type: '',
         },
-        hideInput: true,
         /**
          * @type {JSX.Element[]}
          */
@@ -69,38 +69,33 @@ export default class App extends Component {
         }
     }
 
+    /**
+     * @param {string | string[]} content
+     */
     addRow = content => {
         if (!content) return;
 
-        const rows = this.state.rows;
-
         if (Array.isArray(content)) {
-            const key = rows.length;
-
-            rows.push(
-                <div key={key}>{content.map((part, i) => <span key={i}>{part}</span>)}</div>
+            this.pushRowJSX(
+                <div>
+                    {
+                        content.map((part, i) => (
+                            <span key={i}>{part}</span>
+                        ))
+                    }
+                </div>
             );
-
-            this.setState({ rows });
         } else {
             const newRows = String(content).split('\n');
 
             newRows.forEach((row, i) => {
-                const key = rows.length;
-
                 row = row.trim();
 
                 if (!row && i < newRows.length) {
-                    rows.push(
-                        <br key={key} />
-                    );
+                    this.pushRowJSX(<br />);
                 } else {
-                    rows.push(
-                        <div key={key}>{row}</div>
-                    );
+                    this.pushRowJSX(<div>{row}</div>);
                 }
-
-                this.setState({ rows });
             });
         }
 
@@ -108,13 +103,21 @@ export default class App extends Component {
     }
 
     addLineJump = () => {
-        const rows = this.state.rows;
-        const key = rows.length;
-
-        rows.push(<br key={key} />);
-        this.setState({ rows });
+        this.pushRowJSX(<br />)
 
         this.scrollDown();
+    }
+
+    /**
+     * @param {JSX.Element} row
+     */
+    pushRowJSX = row => {
+        const rows = this.state.rows;
+
+        const key = rows.length;
+        rows.push(React.cloneElement(row, { key }));
+
+        this.setState({ rows });
     }
 
     scrollDown = () => {
@@ -126,11 +129,21 @@ export default class App extends Component {
 
     sendCommand = command => {
         this.hideInput();
+        const stateClass = this.state.terminput.prefix ? " color-inherit" : "";
 
-        if (this.state.terminput.prefix) {
-            this.addRow(`${this.state.terminput.prefix} ${this.state.terminput.type !== 'password' ? command : ''}`);
+        if (this.state.terminput.type === 'password') {
+            this.pushRowJSX(
+                <div>
+                    <span className={"terminal-prefix" + stateClass}>{this.state.terminput.prefix || this.state.prefix} </span>
+                </div>
+            );
         } else {
-            this.addRow(`${this.state.prefix} ${command}`);
+            this.pushRowJSX(
+                <div>
+                    <span className={"terminal-prefix" + stateClass}>{this.state.terminput.prefix || this.state.prefix} </span>
+                    <span>{command}</span>
+                </div>
+            );
         }
 
         this.socket.emit('command', command);
@@ -141,6 +154,7 @@ export default class App extends Component {
             <div className="app">
                 <Terminal
                     prefix={this.state.terminput.prefix || this.state.prefix}
+                    prefixNoColor={String(this.state.terminput.prefix).length > 0}
                     inputType={this.state.terminput.type}
                     sendCommand={this.sendCommand}
                     hideInput={this.state.hideInput}

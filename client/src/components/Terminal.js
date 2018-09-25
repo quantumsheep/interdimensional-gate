@@ -79,7 +79,7 @@ export default class Terminal extends Component {
             this.props.sendCommand(this.state.input.value);
         }
 
-        if (input.value && this.history[this.history.length - 1] !== input.value) {
+        if (input.type !== 'password' && input.value && this.history[this.history.length - 1] !== input.value) {
             this.history.push(input.value);
         }
 
@@ -92,15 +92,15 @@ export default class Terminal extends Component {
     }
 
     render() {
-        const { children, prefix = '', inputType = null, hideInput = false } = this.props;
+        const { children, prefix = '', prefixNoColor = false, inputType = null, hideInput = false } = this.props;
 
         return (
             <form onSubmit={this.sendCommand} className="terminal" onClick={this.focusInput}>
                 <div>
                     {children}
                 </div>
-                <div className={hideInput ? 'invisible' : ''}>
-                    <span>{prefix} </span>
+                <div className={hideInput ? ' invisible' : ''}>
+                    <span className={"terminal-prefix" + (prefixNoColor ? " color-inherit" : "")}>{prefix} </span>
                     <TerminalContent
                         selectionStart={inputType === 'password' ? 0 : this.state.input.selectionStart}
                         content={inputType === 'password' ? '' : this.state.input.value}
