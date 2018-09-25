@@ -29,7 +29,7 @@ export default class Terminal extends Component {
         });
     }
 
-    handleInputKey = e => {
+    handleInputKeyDown = e => {
         const input = this.state.input;
 
         if (e.key === 'ArrowUp') {
@@ -60,14 +60,30 @@ export default class Terminal extends Component {
         }
     }
 
+    handleInputKeyUp = e => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            const input = this.state.input;
+
+            input.selectionStart = e.target.selectionStart;
+            this.setState({ input });
+        }
+    }
+
     sendCommand = e => {
         e.preventDefault();
+
+        const input = this.state.input;
+        input.value = input.value.trim();
 
         if (this.props.sendCommand) {
             this.props.sendCommand(this.state.input.value);
         }
 
-        const input = this.state.input;
+        if (input.value && this.history[this.history.length - 1] !== input.value) {
+            this.history.push(input.value);
+        }
+
+        this.selected = -1;
         input.value = '';
 
         this.setState({
@@ -93,12 +109,12 @@ export default class Terminal extends Component {
                 <input
                     // eslint-disable-next-line
                     ref={input => this.state.input = input}
-                    type={inputType || 'text'} 
+                    type={inputType || 'text'}
                     className="input-hidden"
                     value={this.state.input.value}
                     onChange={this.updateInput}
-                    onKeyDown={this.handleInputKey}
-                    onKeyUp={this.handleInputKey}
+                    onKeyDown={this.handleInputKeyDown}
+                    onKeyUp={this.handleInputKeyUp}
                     autoComplete="off"
                     autoFocus={true}
                 />
