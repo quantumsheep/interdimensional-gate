@@ -50,36 +50,25 @@ app.get('/identify', (req, res) => res.send('ok'));
 | Serve client files
 */
 if (!dev) {
-    const fs = require('fs');
     const path = require('path');
-    const mime = require('mime-types');
+
+    const reactPath = '../client/build/';
 
     app.get('*', async (req, res, next) => {
         if (req.url === '/' || req.url === '') {
             req.url = '/index.html';
         }
 
-        const filepath = path.resolve('../client/build/' + req.url);
+        const filepath = path.resolve(reactPath + req.url);
 
-        fs.exists(filepath, exists => {
-            if (!exists) {
-                return next();
-            }
-
-            fs.stat(filepath, (err, stats) => {
-                if (err || stats.isDirectory()) {
-                    return next();
+        res.sendFile(filepath, err => {
+            if (err) {
+                if (err.code === 'ENOENT') {
+                    return res.sendFile(path.resolve(`${reactPath}index.html`));
                 }
 
-                fs.readFile(filepath, (err, data) => {
-                    if (err) return next();
-
-                    console.log(mime.lookup(filepath));
-
-                    res.contentType(mime.lookup(filepath) || 'text/html');
-                    res.send(data);
-                });
-            });
+                next();
+            }
         });
     });
 }
