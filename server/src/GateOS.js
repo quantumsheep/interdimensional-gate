@@ -91,6 +91,14 @@ module.exports = class GateOS {
                 this.row(`You can't access this command: ${cmd}`).end();
             }
         });
+
+        socket.on('control', key => {
+            const control = String(key).toUpperCase();
+
+            if (control === 'C') {
+                this.end();
+            }
+        });
     }
 
     row(content) {

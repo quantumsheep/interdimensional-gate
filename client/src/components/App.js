@@ -127,11 +127,10 @@ export default class App extends Component {
     hideInput = () => this.setState({ hideInput: true });
     showInput = () => this.setState({ hideInput: false });
 
-    sendCommand = command => {
-        this.hideInput();
+    pushInputLine = command => {
         const stateClass = this.state.terminput.prefix ? " color-inherit" : "";
 
-        if (this.state.terminput.type === 'password') {
+        if (this.state.terminput.type === 'password' || !command) {
             this.pushRowJSX(
                 <div>
                     <span className={"terminal-prefix" + stateClass}>{this.state.terminput.prefix || this.state.prefix} </span>
@@ -145,8 +144,20 @@ export default class App extends Component {
                 </div>
             );
         }
+    }
+
+    sendCommand = (command = '') => {
+        this.hideInput();
+
+        this.pushInputLine(command);
 
         this.socket.emit('command', command);
+    }
+
+    sendControl = (key, command) => {
+        this.pushInputLine(command);
+
+        this.socket.emit('control', key);
     }
 
     render() {
@@ -157,6 +168,7 @@ export default class App extends Component {
                     prefixNoColor={String(this.state.terminput.prefix).length > 0}
                     inputType={this.state.terminput.type}
                     sendCommand={this.sendCommand}
+                    onControl={this.sendControl}
                     hideInput={this.state.hideInput}
                 >
                     {this.state.rows.length <= 0 ? <div>Fetching data...</div> : null}

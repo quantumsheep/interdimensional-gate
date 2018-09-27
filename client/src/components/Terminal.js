@@ -14,6 +14,21 @@ export default class Terminal extends Component {
     history = [];
     selected = -1;
 
+    activeKeys = {};
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.children[1].length !== this.props.children[1].length && this.state.input.value) {
+            this.eraseInput();
+        }
+    }
+
+    eraseInput = () => {
+        const input = this.state.input;
+        input.value = '';
+
+        this.setState({ input });
+    }
+
     focusInput = () => {
         if (this.state.input) {
             this.state.input.focus();
@@ -30,9 +45,13 @@ export default class Terminal extends Component {
     }
 
     handleInputKeyDown = e => {
+        this.activeKeys[e.key.toUpperCase()] = true;
+
         const input = this.state.input;
 
-        if (e.key === 'ArrowUp') {
+        if (this.activeKeys['CONTROL'] && e.key !== 'Control') {
+            this.props.onControl(e.key, this.state.input.value);
+        } else if (e.key === 'ArrowUp') {
             e.preventDefault();
 
             this.selected++;
@@ -61,6 +80,8 @@ export default class Terminal extends Component {
     }
 
     handleInputKeyUp = e => {
+        this.activeKeys[e.key.toUpperCase()] = false;
+
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
             const input = this.state.input;
 
