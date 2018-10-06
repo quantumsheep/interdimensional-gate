@@ -1,9 +1,9 @@
 const db = require('../db');
 
 const schema = new db.Schema({
-    username: { type: String, required: true },
-    email: { type: String, required: true },
-    password: { type: String, required: true }
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true }
 });
 
 const entity = db.model('User', schema);
@@ -25,17 +25,17 @@ const helpers = require('../helpers');
  * @returns {Promise<boolean>} 
  */
 exports.checkCredentials = (email, password) => new Promise(async (resolve, reject) => {
-    if (!email || !password || !helpers.isEmail(email)) {
-        return resolve(false);
-    }
+  if (!email || !password || !helpers.isEmail(email)) {
+    return resolve(false);
+  }
 
-    try {
-        const user = await entity.findOne({ email }, ['password']);
+  try {
+    const user = await entity.findOne({ email }, ['password']);
 
-        const valid = await bcrypt.compare(password, user.password);
+    const valid = await bcrypt.compare(password, user.password);
 
-        resolve(valid);
-    } catch (e) {
-        reject(e);
-    }
+    resolve(valid);
+  } catch (e) {
+    reject(e);
+  }
 });

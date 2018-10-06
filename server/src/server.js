@@ -28,16 +28,16 @@ const { connection } = require('./db');
 const day = 24 * 60 * 60 * 1000;
 
 const session = esession({
-    name: 'gate',
-    secret: cookieSecret,
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-        secure: !dev,
-        httpOnly: true,
-        expires: new Date(Date.now() + 31 * day)
-    },
-    store: new MongoStore({ mongooseConnection: connection })
+  name: 'gate',
+  secret: cookieSecret,
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    secure: !dev,
+    httpOnly: true,
+    expires: new Date(Date.now() + 31 * day)
+  },
+  store: new MongoStore({ mongooseConnection: connection })
 });
 
 app.use(session);
@@ -50,27 +50,27 @@ app.get('/identify', (req, res) => res.send('ok'));
 | Serve client files
 */
 if (!dev) {
-    const path = require('path');
+  const path = require('path');
 
-    const reactPath = '../client/build/';
+  const reactPath = '../client/build/';
 
-    app.get('*', async (req, res, next) => {
-        if (req.url === '/' || req.url === '') {
-            req.url = '/index.html';
+  app.get('*', async (req, res, next) => {
+    if (req.url === '/' || req.url === '') {
+      req.url = '/index.html';
+    }
+
+    const filepath = path.resolve(reactPath + req.url);
+
+    res.sendFile(filepath, err => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          return res.sendFile(path.resolve(`${reactPath}index.html`));
         }
 
-        const filepath = path.resolve(reactPath + req.url);
-
-        res.sendFile(filepath, err => {
-            if (err) {
-                if (err.code === 'ENOENT') {
-                    return res.sendFile(path.resolve(`${reactPath}index.html`));
-                }
-
-                next();
-            }
-        });
+        next();
+      }
     });
+  });
 }
 
 
@@ -78,7 +78,7 @@ if (!dev) {
 | Handle Gate Operating System WS requests
 */
 const io = require('socket.io')(server, {
-    path: '/gateos'
+  path: '/gateos'
 });
 
 const ios = require('express-socket.io-session');
@@ -97,7 +97,7 @@ io.on('connection', socket => new GateOS(io, socket));
 const port = 3011;
 
 server.listen(port, err => {
-    if (err) throw err;
+  if (err) throw err;
 
-    console.log(`> Ready on http://localhost:${port}`);
+  console.log(`> Ready on http://localhost:${port}`);
 });
