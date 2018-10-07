@@ -5,7 +5,7 @@ const schema = new db.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  os: { type: OS, require: true, default: {} },
+  os: { type: OS.schema, require: true, default: {} },
 });
 
 const entity = db.model('User', schema);

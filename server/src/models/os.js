@@ -14,5 +14,7 @@ const schema = new db.Schema({
   files: { type: [FileSchema], required: true, default: [] },
 });
 
+exports.schema = schema;
+
 const entity = db.model('OS', schema);
 exports.entity = entity;
