@@ -50,7 +50,13 @@ export default class Terminal extends Component {
     const input = this.state.input;
 
     if (this.activeKeys['CONTROL'] && e.key !== 'Control') {
-      this.props.onControl(e.key, this.state.input.value);
+      const acceptable = new Set([
+        'C'
+      ]);
+
+      if(acceptable.has(e.key.toUpperCase())) {
+        this.props.onControl(e.key, this.state.input.value);
+      }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
 
