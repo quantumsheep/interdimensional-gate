@@ -31,7 +31,7 @@ body {
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
-    background-color: #1b1b1b;
+    background-color: #0e1012;
 }
 
 h1 {
@@ -216,7 +216,7 @@ input {
 }
 
 .terminal-prefix {
-  color: #ccc;
+  color: #b4b4b4;
 }
 
 .terminal-input-content {
