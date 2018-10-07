@@ -203,6 +203,7 @@ input {
 .terminal {
   padding: 25px;
   height: 100%;
+  width: 100%;
   font-family: AndaleMono;
   cursor: default;
   word-break: break-all;
