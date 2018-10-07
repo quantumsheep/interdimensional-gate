@@ -26,8 +26,11 @@ module.exports = class GateOS {
     this.socket = socket;
 
     const session = {
-      _id: '',
-      username: '',
+      user: {
+        _id: '',
+        username: '',
+        email: '',
+      },
       connected: false,
       save: () => {},
     }
