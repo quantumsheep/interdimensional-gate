@@ -6,7 +6,8 @@ const FileSchema = new db.Schema();
 FileSchema.add({
   name: { type: String, require: true },
   isDir: { type: Boolean, required: true },
-  children: [FileSchema],
+  content: { type: String, required: false },
+  children: { type: [FileSchema], required: false },
 });
 
 const schema = new db.Schema({
