@@ -29,6 +29,7 @@ module.exports = class GateOS {
       _id: '',
       username: '',
       connected: false,
+      save: () => {},
     }
 
     /** @type {session} */
