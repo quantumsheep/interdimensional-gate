@@ -49,6 +49,12 @@ Then, verify the new upstream repository you've specified for your fork.
 git remote -v
 ```
 
+Fetch it:
+
+```
+git fetch upstream
+```
+
 Finally, to pull changes from the upstream repository:
 ```
 git pull upstream/master
