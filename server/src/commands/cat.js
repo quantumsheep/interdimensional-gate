@@ -14,32 +14,37 @@ const noSuchFileOrDirectory = (os, file) => {
  * @param {string[]} args
  */
 exports.call = async (os, [file]) => {
-    if (file.startsWith('./')) {
-        file = file.slice(2);
-    }
-
     if (!file) {
         return os.row('cat: No file provided').end();
     }
 
+    if (file.startsWith('./')) {
+        file = file.slice(2);
+    }
+
     try {
         if (file === "stats") {
-            const user = await User.entity.findOne({ _id: os.session.user._id }, ['username', 'email']);
+            /**
+            | Get user account informations + number of completed challenges
+            */
+            const [user, [{ challenges_done = 0 } = {}]] = await Promise.all([
+                User.entity.findOne({ _id: os.session.user._id }, ['username', 'email']),
 
-            const [{ challenges_done = 0 } = {}] = await User.entity.aggregate([
-                {
-                    $match: {
-                        _id: mongoose.Types.ObjectId(os.session.user._id)
-                    }
-                },
-                { $project: { challenges: 1 } },
-                { $unwind: "$challenges" },
-                {
-                    $match: {
-                        "challenges.completed": true,
-                    }
-                },
-                { $count: "challenges_done" }
+                User.entity.aggregate([
+                    {
+                        $match: {
+                            _id: mongoose.Types.ObjectId(os.session.user._id)
+                        }
+                    },
+                    { $project: { challenges: 1 } },
+                    { $unwind: "$challenges" },
+                    {
+                        $match: {
+                            "challenges.completed": true,
+                        }
+                    },
+                    { $count: "challenges_done" }
+                ])
             ]);
 
             os.row(`Username: ${user.username}`);
