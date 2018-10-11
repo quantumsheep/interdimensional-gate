@@ -80,7 +80,7 @@ export default class App extends Component {
         <div>
           {
             content.map((part, i) => (
-              <span key={i}>{part}</span>
+              <span key={i}>{part} </span>
             ))
           }
         </div>
