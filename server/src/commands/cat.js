@@ -25,20 +25,25 @@ exports.call = async (os, [file]) => {
         if (file === "stats") {
             const user = await User.entity.findOne({ _id: os.session.user._id }, ['username', 'email']);
 
-            const challenges = await User.entity.aggregate([
+            const [{ challenges_done = 0 } = {}] = await User.entity.aggregate([
                 {
                     $match: {
-                        _id: os.session.user._id
+                        _id: mongoose.Types.ObjectId(os.session.user._id)
                     }
                 },
-                { $project: { challenges: 1 } }
+                { $project: { challenges: 1 } },
+                { $unwind: "$challenges" },
+                {
+                    $match: {
+                        "challenges.completed": true,
+                    }
+                },
+                { $count: "challenges_done" }
             ]);
-
-            console.log(challenges);
 
             os.row(`Username: ${user.username}`);
             os.row(`Email: ${user.email}`);
-            os.row(`Completed challenges: ${user.challenges}`);
+            os.row(`Completed challenges: ${challenges_done}`);
             os.end();
         } else if (file.startsWith('challenges')) {
             const [, name] = file.split('/');
