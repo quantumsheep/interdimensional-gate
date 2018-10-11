@@ -1,6 +1,3 @@
-const helpers = require('../helpers');
-const { User } = require('../models');
-
 /**
  * @param {import('../GateOS')} os 
  * @param {string[]} args

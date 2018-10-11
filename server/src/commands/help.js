@@ -1,9 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const helpers = require('../helpers');
-const { User } = require('../models');
-
 /**
  * @param {import('../GateOS')} os 
  * @param {string[]} args
