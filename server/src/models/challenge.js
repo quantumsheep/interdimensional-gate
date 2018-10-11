@@ -6,9 +6,11 @@ const Answers = new db.Schema({
 });
 
 const schema = new db.Schema({
-  name: { type: String, required: true },
-  type: { type: String, required: true },
-  answers: { type: [Answers], required: true, default: [] },
+    name: { type: String, required: true },
+    type: { type: String, required: true },
+    difficulty: { type: Number, required: true, default: -1 },
+    description: { type: String, required: true },
+    answers: { type: [Answers], required: true, default: [] },
 });
 
 const entity = db.model('Challenge', schema);

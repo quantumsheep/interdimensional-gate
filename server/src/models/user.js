@@ -1,9 +1,16 @@
 const db = require('../db');
 
+const Challenge = new db.Schema({
+  challengeid: { type: db.Schema.Types.ObjectId, required: true },
+  completed: { type: Boolean, required: true, default: false },
+  code: { type: String, required: false },
+});
+
 const schema = new db.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
+  challenges: { type: [Challenge], required: true, default: [] },
 });
 
 const entity = db.model('User', schema);

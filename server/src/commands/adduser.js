@@ -113,10 +113,26 @@ exports.state = async (os, value) => {
       return;
     }
 
+    const mongoose = require('mongoose');
+
     await new User.entity({
       username: os.state.data.username,
       email: os.state.data.email,
       password: os.state.data.password1,
+      challenges: [
+        {
+          challengeid: new mongoose.Types.ObjectId(),
+          completed: true,
+        },
+        {
+          challengeid: new mongoose.Types.ObjectId(),
+          completed: false,
+        },
+        {
+          challengeid: new mongoose.Types.ObjectId(),
+          completed: true,
+        }
+      ]
     }).save();
 
     os.row(`User \`${os.state.data.username}' created!`).end();
