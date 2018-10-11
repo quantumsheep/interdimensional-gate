@@ -121,6 +121,19 @@ module.exports = class GateOS {
     return this;
   }
 
+  /**
+   * @param {string} cmd
+   */
+  help(cmd) {
+    if (commands.help) {
+      commands.help(os, cmd);
+    } else {
+      this.end();
+    }
+
+    return this;
+  }
+
   linejump() {
     this.socket.emit('linejump');
     return this;
