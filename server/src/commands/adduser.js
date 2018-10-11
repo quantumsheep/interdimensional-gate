@@ -117,15 +117,6 @@ exports.state = async (os, value) => {
       username: os.state.data.username,
       email: os.state.data.email,
       password: os.state.data.password1,
-      os: {
-        files: [
-          {
-            name: "instructions.md",
-            isDir: false,
-            content: "Liste des instructions",
-          }
-        ]
-      }
     }).save();
 
     os.row(`User \`${os.state.data.username}' created!`).end();
