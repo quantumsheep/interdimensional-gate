@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { Challenge, User } = require('../models/index')
 
 /**
