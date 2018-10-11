@@ -55,8 +55,9 @@ exports.call = async (os, [file]) => {
             const [, name] = file.split('/');
 
             if (!name) {
-                return os.row(`cat: ${file}: Is a directory`);
+                return os.row(`cat: ${file}: Is a directory`).end();
             }
+            
             const challenge = Challenge.entity.findOne({ name });
 
             if (!challenge) {
