@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Challenge, User } = require('../models/index')
+const { Challenge, User } = require('../models')
 
 /**
  * @param {import('../GateOS')} os 
