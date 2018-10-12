@@ -32,8 +32,6 @@ module.exports = class GateOS {
       data: {},
     };
 
-    this.position = '/';
-
     this.currentCommand = '';
 
     /**
