@@ -126,7 +126,7 @@ module.exports = class GateOS {
    */
   help(cmd) {
     if (commands.help) {
-      commands.help(os, cmd);
+      commands.help(this, cmd);
     } else {
       this.end();
     }
