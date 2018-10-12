@@ -25,8 +25,22 @@ exports.state = (os, value) => {
     }
 
     if(!os.state.data.description) {
-        os.setState({ description: value });
-        os.input('');
+        os.setState({ description: value, i: 1 });
+        os.input(`Input length:`, 'number');
         return;
+    }
+
+    if(!os.state.data.input) {
+        const input = new Array(parseInt(value));
+        os.setState({ input, i: 0 });
+        return;
+    }
+
+    if(!os.state.data.input[os.state.data.i]) {
+        
+
+        if(os.state.data.input.length > os.state.data.i + 1) {
+            os.state.data.i++;
+        }
     }
 }
