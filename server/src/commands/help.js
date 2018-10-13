@@ -10,7 +10,14 @@ exports.call = (os, [command]) => {
 
   if (command) {
     fs.readFile(`${manPath}/${command}.md`, (err, data) => {
-      if (err) return console.log(err);
+      if (err) {
+        if (err.code === 'ENOENT') {
+          return os.row(`No manual entry for ${command}`).end();
+        }
+
+        os.row('An error occured').end();
+        return console.log(err);
+      }
 
       os.row(data.toString());
 
